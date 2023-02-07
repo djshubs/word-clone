@@ -23,7 +23,8 @@ const GuessInput = () => {
       <label htmlFor='guess-input'>Enter guess:</label>
       <input
         required
-        minLength={5}
+        pattern='[a-zA-Z]{5}'
+        title='Enter a 5 letter word.'
         maxLength={5}
         type='text'
         id='guess-input'
