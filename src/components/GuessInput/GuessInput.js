@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { WORD_LENGTH } from '../../constants';
 
 const GuessInput = ({ handleAddGuess }) => {
   const [guessInput, setGuessInput] = useState('');
@@ -13,8 +14,8 @@ const GuessInput = ({ handleAddGuess }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({ guessInput });
-    if (guessInput.length !== 5) {
-      window.alert('Please enter exactly 5 characters.');
+    if (guessInput.length !== WORD_LENGTH) {
+      window.alert(`Please enter exactly ${WORD_LENGTH} characters.`);
       return;
     }
     handleAddGuess(guessInput);
@@ -26,9 +27,9 @@ const GuessInput = ({ handleAddGuess }) => {
       <label htmlFor='guess-input'>Enter guess:</label>
       <input
         required
-        pattern='[a-zA-Z]{5}'
-        title='Enter a 5 letter word.'
-        maxLength={5}
+        pattern={`[a-zA-Z]{${WORD_LENGTH}}`}
+        title={`Enter a ${WORD_LENGTH} letter word.`}
+        maxLength={WORD_LENGTH}
         type='text'
         id='guess-input'
         name='guess-input'
