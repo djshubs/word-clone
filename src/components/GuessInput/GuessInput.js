@@ -4,7 +4,9 @@ const GuessInput = () => {
   const [guessInput, setGuessInput] = useState('');
 
   const handleChange = (event) => {
-    const guessInputUpperCase = event.target.value.toUpperCase();
+    const guessInputUpperCase = event.target.value
+      .trim()
+      .toUpperCase();
     setGuessInput(guessInputUpperCase);
   };
 
