@@ -10,13 +10,25 @@ const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
 console.info({ answer });
 
-function Game() {
+const Game = () => {
+  const [guessList, setGuessList] = React.useState([]);
+
+  const handleAddGuess = (guessInput) => {
+    const newGuess = {
+      id: crypto.randomUUID(),
+      label: guessInput,
+    };
+
+    const nextGuessList = [...guessList, newGuess];
+    setGuessList(nextGuessList);
+  };
+
   return (
     <>
-      <GuessResults />
-      <GuessInput />
+      <GuessResults guessList={guessList} />
+      <GuessInput handleAddGuess={handleAddGuess} />
     </>
   );
-}
+};
 
 export default Game;

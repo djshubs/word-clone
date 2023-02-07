@@ -1,10 +1,12 @@
 import { React, useState } from 'react';
 
-const GuessInput = () => {
+const GuessInput = ({ handleAddGuess }) => {
   const [guessInput, setGuessInput] = useState('');
 
   const handleChange = (event) => {
-    const guessInputUpperCase = event.target.value.toUpperCase();
+    const guessInputUpperCase = event.target.value
+      .trim()
+      .toUpperCase();
     setGuessInput(guessInputUpperCase);
   };
 
@@ -15,6 +17,7 @@ const GuessInput = () => {
       window.alert('Please enter exactly 5 characters.');
       return;
     }
+    handleAddGuess(guessInput);
     setGuessInput('');
   };
 

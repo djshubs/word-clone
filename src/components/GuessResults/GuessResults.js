@@ -1,11 +1,6 @@
 import React from 'react';
 
-const GuessResults = () => {
-  const guessList = [
-    { id: 1, label: 'FIRST' },
-    { id: 2, label: 'SECOND' },
-  ];
-
+const GuessResults = ({ guessList }) => {
   return (
     <>
       <div class='guess-results'>
