@@ -16,6 +16,14 @@ const Game = () => {
   const [guessList, setGuessList] = React.useState([]);
   const [correctAnswer, setCorrectAnswer] = React.useState(answer);
 
+  const handleReset = () => {
+    setGuessList([]);
+    setGameStatus('running');
+    const newAnswer = sample(WORDS);
+    setCorrectAnswer(newAnswer);
+    console.log({ newAnswer });
+  };
+
   const handleAddGuess = (guessInput) => {
     const newGuess = {
       id: crypto.randomUUID(),
@@ -41,10 +49,16 @@ const Game = () => {
 
       <div>
         {gameStatus === 'won' && (
-          <WonBanner guessCount={guessList.length} />
+          <WonBanner
+            guessCount={guessList.length}
+            handleReset={handleReset}
+          />
         )}
         {gameStatus === 'lost' && (
-          <LossBanner answer={correctAnswer} />
+          <LossBanner
+            answer={correctAnswer}
+            handleReset={handleReset}
+          />
         )}
       </div>
     </>
@@ -53,7 +67,7 @@ const Game = () => {
 
 export default Game;
 
-export const WonBanner = ({ guessCount }) => {
+export const WonBanner = ({ guessCount, handleReset }) => {
   return (
     <div className='happy banner'>
       <p>
@@ -64,16 +78,18 @@ export const WonBanner = ({ guessCount }) => {
         </strong>
         .
       </p>
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 };
 
-export const LossBanner = ({ answer }) => {
+export const LossBanner = ({ answer, handleReset }) => {
   return (
     <div className='sad banner'>
       <p>
         Sorry, the correct answer is <strong>{answer}</strong>.
       </p>
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 };
