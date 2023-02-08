@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import { WORD_LENGTH } from '../../constants';
 
-const GuessInput = ({ handleAddGuess }) => {
+const GuessInput = ({ handleAddGuess, disabled }) => {
   const [guessInput, setGuessInput] = useState('');
 
   const handleChange = (event) => {
@@ -34,6 +34,7 @@ const GuessInput = ({ handleAddGuess }) => {
         id='guess-input'
         name='guess-input'
         value={guessInput}
+        disabled={disabled}
         onChange={(event) => handleChange(event)}
       />
     </form>

@@ -12,38 +12,41 @@ export const answer = sample(WORDS);
 console.info({ answer });
 
 const Game = () => {
+  const [gameStatus, setGameStatus] = React.useState('running');
   const [guessList, setGuessList] = React.useState([]);
   const [correctAnswer, setCorrectAnswer] = React.useState(answer);
-
-  const handleLoss = () => {
-    return guessList.length === NUM_OF_GUESSES_ALLOWED;
-  };
-
-  const handleWin = () => {
-    console.log(guessList);
-    const result =
-      guessList.findIndex((guess) => guess.word === correctAnswer) >
-      -1;
-    console.log(result);
-    return result;
-  };
 
   const handleAddGuess = (guessInput) => {
     const newGuess = {
       id: crypto.randomUUID(),
       word: guessInput,
     };
-
     const nextGuessList = [...guessList, newGuess];
     setGuessList(nextGuessList);
+
+    if (guessInput === correctAnswer) {
+      setGameStatus('won');
+    } else if (nextGuessList.length >= NUM_OF_GUESSES_ALLOWED) {
+      setGameStatus('lost');
+    }
   };
 
   return (
     <>
       <GuessResults guessList={guessList} answer={correctAnswer} />
-      <GuessInput handleAddGuess={handleAddGuess} />
-      {handleLoss() && <LossBanner answer={correctAnswer} />}
-      {handleWin() && <WonBanner guessCount={guessList.length} />}
+      <GuessInput
+        handleAddGuess={handleAddGuess}
+        disabled={gameStatus !== 'running'}
+      />
+
+      <div>
+        {gameStatus === 'won' && (
+          <WonBanner guessCount={guessList.length} />
+        )}
+        {gameStatus === 'lost' && (
+          <LossBanner answer={correctAnswer} />
+        )}
+      </div>
     </>
   );
 };
@@ -55,7 +58,11 @@ export const WonBanner = ({ guessCount }) => {
     <div className='happy banner'>
       <p>
         <strong>Congratulations!</strong> Got it in
-        <strong> {guessCount} guesses</strong>.
+        <strong>
+          {' '}
+          {guessCount === 1 ? '1 guess' : `${guessCount} guesses`}
+        </strong>
+        .
       </p>
     </div>
   );
