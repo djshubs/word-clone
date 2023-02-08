@@ -5,22 +5,26 @@ import { WORDS } from '../../data';
 import GuessInput from '../GuessInput/GuessInput';
 import GuessResults from '../GuessResults/GuessResults';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
+import LossBanner from '../LossBanner/LossBanner';
+import WonBanner from '../WonBanner/WonBanner';
 
 // Pick a random word on every pageload.
-export const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
 
 const Game = () => {
   const [gameStatus, setGameStatus] = React.useState('running');
   const [guessList, setGuessList] = React.useState([]);
-  const [correctAnswer, setCorrectAnswer] = React.useState(answer);
+  const [answer, setAnswer] = React.useState(() => {
+    const answer = sample(WORDS);
+    console.log({ answer });
+    return answer;
+  });
 
   const handleReset = () => {
     setGuessList([]);
     setGameStatus('running');
     const newAnswer = sample(WORDS);
-    setCorrectAnswer(newAnswer);
+    setAnswer(newAnswer);
     console.log({ newAnswer });
   };
 
@@ -32,7 +36,7 @@ const Game = () => {
     const nextGuessList = [...guessList, newGuess];
     setGuessList(nextGuessList);
 
-    if (guessInput === correctAnswer) {
+    if (guessInput === answer) {
       setGameStatus('won');
     } else if (nextGuessList.length >= NUM_OF_GUESSES_ALLOWED) {
       setGameStatus('lost');
@@ -41,7 +45,7 @@ const Game = () => {
 
   return (
     <>
-      <GuessResults guessList={guessList} answer={correctAnswer} />
+      <GuessResults guessList={guessList} answer={answer} />
       <GuessInput
         handleAddGuess={handleAddGuess}
         disabled={gameStatus !== 'running'}
@@ -51,14 +55,11 @@ const Game = () => {
         {gameStatus === 'won' && (
           <WonBanner
             guessCount={guessList.length}
-            handleReset={handleReset}
+            action={handleReset}
           />
         )}
         {gameStatus === 'lost' && (
-          <LossBanner
-            answer={correctAnswer}
-            handleReset={handleReset}
-          />
+          <LossBanner answer={answer} action={handleReset} />
         )}
       </div>
     </>
@@ -66,30 +67,3 @@ const Game = () => {
 };
 
 export default Game;
-
-export const WonBanner = ({ guessCount, handleReset }) => {
-  return (
-    <div className='happy banner'>
-      <p>
-        <strong>Congratulations!</strong> Got it in
-        <strong>
-          {' '}
-          {guessCount === 1 ? '1 guess' : `${guessCount} guesses`}
-        </strong>
-        .
-      </p>
-      <button onClick={handleReset}>Reset</button>
-    </div>
-  );
-};
-
-export const LossBanner = ({ answer, handleReset }) => {
-  return (
-    <div className='sad banner'>
-      <p>
-        Sorry, the correct answer is <strong>{answer}</strong>.
-      </p>
-      <button onClick={handleReset}>Reset</button>
-    </div>
-  );
-};
