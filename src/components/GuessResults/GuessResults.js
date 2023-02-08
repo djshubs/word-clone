@@ -3,13 +3,13 @@ import Guess from '../Guess/Guess';
 import { range } from '../../utils';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
-const GuessResults = ({ guessList }) => {
+const GuessResults = ({ guessList, answer }) => {
   return (
     <>
       <div className='guess-results'>
         {range(NUM_OF_GUESSES_ALLOWED).map((num) => {
-          const { label } = guessList[num] ? guessList[num] : {};
-          return <Guess key={num} word={label} />;
+          const { word } = guessList[num] ? guessList[num] : {};
+          return <Guess key={num} word={word} answer={answer} />;
         })}
       </div>
     </>

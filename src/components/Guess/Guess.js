@@ -2,21 +2,21 @@ import React from 'react';
 import { range } from '../../utils';
 import { WORD_LENGTH } from '../../constants';
 import { checkGuess } from '../../game-helpers';
-import { answer } from '../Game/Game';
 
-const Guess = ({ word }) => {
-  const wordArray = checkGuess(word, answer);
+export const Cell = ({ letter, status }) => {
+  const className = status ? `cell ${status}` : `cell`;
+  return <span className={className}>{letter}</span>;
+};
+
+const Guess = ({ word, answer }) => {
+  const result = checkGuess(word, answer);
 
   return (
     <>
       <p className='guess'>
         {range(WORD_LENGTH).map((num) => {
-          const { letter, status } = wordArray ? wordArray[num] : {};
-          return (
-            <span key={num} className={`cell ${status}`}>
-              {letter ? letter : undefined}
-            </span>
-          );
+          const { letter, status } = result ? result[num] : {};
+          return <Cell key={num} letter={letter} status={status} />;
         })}
       </p>
     </>

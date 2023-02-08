@@ -16,7 +16,7 @@ const Game = () => {
   const handleAddGuess = (guessInput) => {
     const newGuess = {
       id: crypto.randomUUID(),
-      label: guessInput,
+      word: guessInput,
     };
 
     const nextGuessList = [...guessList, newGuess];
@@ -25,7 +25,7 @@ const Game = () => {
 
   return (
     <>
-      <GuessResults guessList={guessList} />
+      <GuessResults guessList={guessList} answer={answer} />
       <GuessInput handleAddGuess={handleAddGuess} />
     </>
   );
